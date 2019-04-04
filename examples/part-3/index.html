@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>three.js demo3</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../lib/three.js"></script>
+    <style>
+        body { margin: 0; }
+        canvas { width: 100%; height: 100% }
+    </style>
+</head>
+<body>
+    <div class="container" id="container"></div>
+    
+    <script>
+
+        //准备工作
+        //1.场景 scene
+        let scene = new THREE.Scene();
+
+        //2.相机 camera
+        let camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 500);
+        camera.position.set(0, 0, 100);
+        camera.lookAt( 0, 0, 0 );
+
+        //3.渲染器 WebGLRenderer
+        let renderer = new THREE.WebGLRenderer();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        document.getElementById('container').appendChild(renderer.domElement);
+        
+        /*
+        4.生成物体
+            在 Three.js 中生成一个物体只需要三步：
+            设置物体的形状
+            设置物体的材质
+            把形状和材质结合起来
+        */
+        //create a blue LineBasicMaterial
+        var material = new THREE.LineBasicMaterial( { color: 0x0000ff } );
+        var geometry = new THREE.Geometry();
+        geometry.vertices.push(new THREE.Vector3( -10, 0, 0) );
+        geometry.vertices.push(new THREE.Vector3( 0, 10, 0) );
+        geometry.vertices.push(new THREE.Vector3( 10, 0, 0) );
+        var line = new THREE.Line( geometry, material );
+
+        //5.渲染器 直接渲染 场景 和 相机
+        scene.add( line );
+        renderer.render( scene, camera );
+        
+    </script>
+</body>
+</html>
