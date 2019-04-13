@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>three.js demo3</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../lib/three.js"></script>
+    <script src="../lib/loaders/GLTFLoader.js"></script>
+    <script src="../lib/controls/TrackballControls.js"></script>
+    <style>
+        body { margin: 0; }
+        canvas { width: 100%; height: 100% }
+    </style>
+</head>
+<body>
+    <div class="container" id="container"></div>
+    
+    <script>
+
+        //准备工作
+        //1.场景 scene
+        let scene = new THREE.Scene();
+
+        //2.相机 camera
+        let camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 500);
+        camera.position.set(0, 0, 100);
+        camera.lookAt( 0, 0, 0 );
+
+        //3.渲染器 WebGLRenderer
+        let renderer = new THREE.WebGLRenderer();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        document.getElementById('container').appendChild(renderer.domElement);
+        
+        /*
+        4.生成物体
+            在 Three.js 中生成一个物体只需要三步：
+            设置物体的形状
+            设置物体的材质
+            把形状和材质结合起来
+            从理论到实践，走进，融入农民生活，切身体会到他人的不易。考虑问题从问题本身到能站在他人角度考虑
+        */
+        //create a blue LineBasicMaterial
+        
+        //6.控制器 controls
+        //相机控件，可通过键盘、鼠标控制相机的移动
+        var controls = new THREE.TrackballControls(camera);
+        controls.rotateSpeed = 2.5;
+        controls.zoomSpeed = 1.2;
+        controls.panSpeed = 0.8;
+        controls.noZoom = false;
+        controls.noPan = false;
+        controls.staticMoving = true;
+        controls.dynamicDampingFactor = 0.3;
+
+        // loaders
+        var loader = new THREE.GLTFLoader();
+
+        loader.load( 'ftm/scene.gltf', function ( gltf ) {
+            console.log(gltf)
+            scene.add( gltf.scene );
+            // function animate() {
+            //     requestAnimationFrame(animate);
+            //     gltf.scene.rotation.x += 0.04;
+            //     gltf.scene.rotation.y += 0.04;
+            //     renderer.render(scene, camera);
+            // }
+            // var mixer = new THREE.AnimationMixer( gltf.scene.children[0] ); 
+            // mixer.clipAction( gltf.animations[ 0 ] ).setDuration( 1 ).play();
+            // mixers.push( mixer );
+
+            renderer.render( scene, camera );
+
+        }, undefined, function ( error ) {
+
+            console.error( error );
+
+        } );
+
+        //5.渲染器 直接渲染 场景 和 相机
+        // scene.add( line );
+        renderer.render( scene, camera );
+
+        setInterval(() => {
+            controls.update();
+            renderer.render(scene, camera); // 渲染场景中的模型
+        }, 5);
+        
+    </script>
+</body>
+</html>
